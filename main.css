@@ -103,7 +103,17 @@ li input {
     font-size: .9rem;
     letter-spacing: .5px;
     transition: all .1s ease-in;
+    position: relative;
 }
+
+/* .btn:after {
+    content: '&pound';
+    display: block;
+    position: absolute;
+    color: red;
+    width: 20px;
+    height: 20px;
+} */
 
 .btn[disabled] {
     background: #8795A1;

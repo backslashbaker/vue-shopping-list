@@ -13,12 +13,39 @@
                         <button v-else class="btn btn-cancel" @click="changeState('default')" >Cancel</button>
                     </div>
             <div v-if="state === 'edit'" class='add-item-form'>
-                <input v-model="newItem" type="text" placeholder="Add an item" @keyup.enter="saveItem" />
-                <p>{{ characterCount }}/200</p>
+                <input v-model="newItem.label" type="text" placeholder="Add an item" @keyup.enter="saveItem" />
+                <input v-model="newItem.cost" class="add-item-form__cost" type="number" placeholder="cost" />
+                <p>
+                    <label>Quantity</label>
+                    <select v-model="newItem.quantity" id= "myList">
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                      <option value="6">6</option>
+                      <option value="7">7</option>
+                      <option value="8">8</option>
+                      <option value="9">9</option>
+                      <option value="10">10</option>
+                      <option value="11">11</option>
+                      <option value="12">12</option>
+                      <option value="13">13</option>
+                      <option value="14">14</option>
+                      <option value="15">15</option>
+                      <option value="16">16</option>
+                      <option value="17">17</option>
+                      <option value="18">18</option>
+                      <option value="19">19</option>
+                      <option value="20">20</option>
+                    </select>
+                </p>
                 <button class='btn btn-primary' :disabled="newItem.length === 0" @click="saveItem">Save Item </button>
             </div>
                 <ul>
-                    <li v-for="item in reversedItems" :class="{strikeout: item.purchased}" @click="toggledPurchased(item)">{{ item.label }}</li>
+                    <li v-for="item in reversedItems" :key="item.id" :class="{strikeout: item.purchased}" @click="toggledPurchased(item)">
+                            {{item.quantity}} - {{ item.label }} - {{item.cost}}
+                    </li>
                 </ul>
                 <p v-if='items.length === 0'>Nice job! You've bought all your items.</p>
         </div>
@@ -30,18 +57,33 @@
                 data: {
                     state: 'default',
                     header: 'shopping list app',
-                    newItem: '',
+                    newItem: {
+                        label: '',
+                        quantity: 1,
+                        cost: '',
+                        purchased: false,
+                    },
+                    cost: 0,
                     items: [ 
                         {
-                            label: '10 party hats',
+                            id: 0,
+                            label: 'party hats',
+                            quantity: 10,
+                            cost: null,
                             purchased: false,
                         },
                         {
-                            label: '2 board games',
+                            id: 1,
+                            label: 'board games',
+                            quantity: 2,
+                            cost: null,
                             purchased: true,
                         },
                         {
-                            label:'20 cups',
+                            id: 2,
+                            label:'cups',
+                            quantity: 20,
+                            cost: null,
                             purchased: false,
                         }
                     ]
@@ -57,15 +99,30 @@
                 methods: {
                     saveItem: function() {
                         this.items.push({
-                            label: this.newItem,
-                            purchased: false,
+                            id: this.items.length + 1,
+                            label: this.newItem.label,
+                            purchased: this.newItem.purchased,
+                            cost: this.newItem.cost,
+                            quantity: this.newItem.quantity,
                         });
-                        this.newItem = '';
+                        this.newItem = {
+                            id: '',
+                            label: '',
+                            quantity: 1,
+                            cost: '',
+                            purchased: false,
+                        };
                     },
                     changeState: function(newState) {
                         this.state = newState;
 
-                        this.newItem = '';
+                        this.newItem = {
+                            id: '',
+                            label: '',
+                            quantity: 1,
+                            cost: '',
+                            purchased: false,
+                        };
 
                     },
                     toggledPurchased: function(item) {
