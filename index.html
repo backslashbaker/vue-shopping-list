@@ -42,12 +42,24 @@
                 </p>
                 <button class='btn btn-primary' :disabled="newItem.length === 0" @click="saveItem">Save Item </button>
             </div>
-                <ul>
-                    <li v-for="item in reversedItems" :key="item.id" :class="{strikeout: item.purchased}" @click="toggledPurchased(item)">
-                            {{item.quantity}} - {{ item.label }} - {{item.cost}}
-                    </li>
-                </ul>
+                <div>
+                    <table class="table">
+                        <tr >
+                            <th>Item</th>
+                            <th>Cost</th> 
+                            <th>Quantity</th>
+                        </tr>
+                        <tr v-for="item in reversedItems" :key="item.id" :class="{strikeout: item.purchased}" @click="toggledPurchased(item)">
+                            <td>{{ item.label }}</td>
+                            <td>£{{item.cost}}</td> 
+                            <td>{{item.quantity}} </td>
+                        </tr>
+                    </table>
+                        <!-- {{ item.label }}  £{{item.cost}}  {{item.quantity}}  -->
+                </div>     
+                        
                 <p v-if='items.length === 0'>Nice job! You've bought all your items.</p>
+                <p>Total: {{ calculateTotal }}</p>
         </div>
 
         <script src="https://unpkg.com/vue"></script>
@@ -63,27 +75,28 @@
                         cost: '',
                         purchased: false,
                     },
+                    total: 0,
                     cost: 0,
                     items: [ 
                         {
                             id: 0,
                             label: 'party hats',
                             quantity: 10,
-                            cost: null,
+                            cost: 3,
                             purchased: false,
                         },
                         {
                             id: 1,
                             label: 'board games',
                             quantity: 2,
-                            cost: null,
+                            cost: 15,
                             purchased: true,
                         },
                         {
                             id: 2,
                             label:'cups',
                             quantity: 20,
-                            cost: null,
+                            cost: 12,
                             purchased: false,
                         }
                     ]
@@ -94,6 +107,12 @@
                     },
                     reversedItems() {
                         return this.items.slice(0).reverse();
+                    },
+                    calculateTotal() {
+                        for( let i = 0; i < this.items.length; i++ ){
+                            this.total = this.total + (this.items[i].cost * this.items[i].quantity);
+                        }
+                        return this.total;
                     }
                 },
                 methods: {

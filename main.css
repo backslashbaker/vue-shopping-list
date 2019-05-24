@@ -1,4 +1,7 @@
-    
+    .table {
+        width: 100%;
+        text-align: left;
+    }
 body {
     background: #EFF8FF;
     height: 100vh;
